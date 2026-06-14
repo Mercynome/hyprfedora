@@ -68,18 +68,37 @@ fi
 echo "Paket kurulumu tamamlandı."
 echo "Yapılandırma dosyaları (Dotfiles) sembolik bağ (symlink) olarak ~/.config altına bağlanıyor..."
 
-DOTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dots/.config"
+DOTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dots"
 CONFIG_DIR="$HOME/.config"
 
 mkdir -p "$CONFIG_DIR"
 
-# Her bir config klasörünü / dosyasını tarayıp sembolik bağ oluşturuyoruz
-for item in "$DOTS_DIR"/*; do
+# 1. ~/.config Klasörü İçin Sembolik Bağlar
+for item in "$DOTS_DIR/.config"/*; do
     if [ -e "$item" ]; then
         item_name=$(basename "$item")
         target="$CONFIG_DIR/$item_name"
         
-        # Eğer hedefte zaten bir klasör/dosya varsa veya bozuk bir sembolik bağ ise yedekle/sil
+        if [ -e "$target" ] || [ -L "$target" ]; then
+            echo "Yedekleniyor: $target -> ${target}_backup"
+            mv "$target" "${target}_backup" 2>/dev/null || rm -rf "$target"
+        fi
+        
+        echo "Bağlanıyor: $target -> $item"
+        ln -s "$item" "$target"
+    fi
+done
+
+# 2. Ana Dizin (~) İçin Sembolik Bağlar (Örn: .bashrc)
+for item in "$DOTS_DIR"/.*; do
+    if [ -f "$item" ]; then
+        item_name=$(basename "$item")
+        # . ve .. dizinlerini atla
+        if [ "$item_name" == "." ] || [ "$item_name" == ".." ] || [ "$item_name" == ".config" ]; then
+            continue
+        fi
+        
+        target="$HOME/$item_name"
         if [ -e "$target" ] || [ -L "$target" ]; then
             echo "Yedekleniyor: $target -> ${target}_backup"
             mv "$target" "${target}_backup" 2>/dev/null || rm -rf "$target"
