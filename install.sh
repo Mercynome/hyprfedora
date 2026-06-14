@@ -27,7 +27,7 @@ if [ "$OS" == "fedora" ]; then
     sudo dnf copr enable -y solopasha/hyprland
     sudo dnf copr enable -y scottames/awww
     sudo dnf copr enable -y sdegler/hyprland
-    sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user
+    sudo dnf install -y --skip-unavailable kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user unzip
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
     cargo install hyprKCS
@@ -144,8 +144,8 @@ echo "GRUB (Önyükleyici) teması kuruluyor (Hyperfluent Fedora)..."
 sudo mkdir -p /boot/grub2/themes
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "$SCRIPT_DIR/hyperfluent-fedora.tar.gz" ]; then
-    # Dosyanın çıkarıldığı yeri açıkça belirtelim ve yetki sorunu olmaması için sudo ile bash alt kabuğunda çalıştıralım
-    sudo bash -c "tar -xzf '$SCRIPT_DIR/hyperfluent-fedora.tar.gz' -C /boot/grub2/themes/ 2>/dev/null || true"
+    # GRUB teması aslen zip arşivi olduğu için (adında tar.gz yazsa da) unzip ile hyperfluent-fedora klasörüne çıkartıyoruz.
+    sudo unzip -q -o "$SCRIPT_DIR/hyperfluent-fedora.tar.gz" -d /boot/grub2/themes/hyperfluent-fedora/ 2>/dev/null || true
     
     if grep -q "^GRUB_THEME=" /etc/default/grub; then
         sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub2/themes/hyperfluent-fedora/theme.txt"|' /etc/default/grub
