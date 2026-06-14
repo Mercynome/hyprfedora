@@ -4,6 +4,14 @@
 # Bu betik Fedora veya Arch sistemini otomatik algılar ve gerekli dotfiles paketlerini kurar.
 # ==============================================================================
 
+if [ "$EUID" -eq 0 ]; then
+    echo "HATA: Lütfen bu betiği 'sudo' ile çalıştırmayın!"
+    echo "Bunu yaparsanız tüm dosyalarınız /root dizinine kopyalanır."
+    echo "Betik içindeki paket yöneticisi (dnf/pacman) sizden otomatik şifre isteyecektir."
+    echo "Doğru kullanım: ./install.sh"
+    exit 1
+fi
+
 echo "OS Tespiti yapılıyor..."
 
 if [ -f /etc/os-release ]; then
@@ -16,7 +24,7 @@ fi
 
 if [ "$OS" == "fedora" ]; then
     echo "Fedora sistemi tespit edildi! Paketler kuruluyor..."
-    sudo dnf copr enable -y solopasha/hyprland scottames/awww tofik/nwg-shell sdegler/hyprland
+    sudo dnf copr enable -y solopasha/hyprland scottames/awww sdegler/hyprland
     sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
@@ -47,8 +55,10 @@ if [ ! -d "$HOME/.local/share/icons/Pure-Dark" ]; then
     echo "Pure Icon Theme indiriliyor..."
     temp_pure=$(mktemp -d)
     git clone https://github.com/mjkim0727/Pure-icon-theme.git "$temp_pure"
-    cd "$temp_pure"
-    ./install-user.sh || cp -r Pure* ~/.local/share/icons/
+    (
+        cd "$temp_pure" || exit
+        ./install-user.sh || cp -r Pure* ~/.local/share/icons/
+    )
     rm -rf "$temp_pure"
 fi
 
