@@ -65,6 +65,12 @@ if ! command -v pfetch &> /dev/null; then
     sudo chmod +x /usr/local/bin/pfetch
 fi
 
+# Starship Kurulumu (Terminal Teması)
+if ! command -v starship &> /dev/null; then
+    echo "Starship terminal teması kuruluyor..."
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
 echo "Paket kurulumu tamamlandı."
 echo "Yapılandırma dosyaları (Dotfiles) sembolik bağ (symlink) olarak ~/.config altına bağlanıyor..."
 
