@@ -58,6 +58,13 @@ if [ ! -d "$HOME/.icons/Bibata-Modern-Classic" ]; then
     wget -qO- https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Classic.tar.xz | tar xJ -C ~/.icons/
 fi
 
+# pfetch Kurulumu (Sistem Bilgi Gösterici)
+if ! command -v pfetch &> /dev/null; then
+    echo "pfetch kuruluyor..."
+    sudo wget -qO /usr/local/bin/pfetch https://github.com/dylanaraps/pfetch/raw/master/pfetch
+    sudo chmod +x /usr/local/bin/pfetch
+fi
+
 echo "Paket kurulumu tamamlandı."
 echo "Yapılandırma dosyaları (Dotfiles) sembolik bağ (symlink) olarak ~/.config altına bağlanıyor..."
 
