@@ -57,7 +57,13 @@ if [ ! -d "$HOME/.icons/Bibata-Modern-Classic" ]; then
     echo "Bibata Cursors indiriliyor..."
     wget -qO- https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Classic.tar.xz | tar xJ -C ~/.icons/
 fi
-
+# Nerd Fonts Kurulumu (FiraCode)
+if ! fc-list | grep -i "FiraCode Nerd Font" &> /dev/null; then
+    echo "FiraCode Nerd Font indiriliyor..."
+    mkdir -p ~/.local/share/fonts/FiraCode
+    wget -qO- https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz | tar xJ -C ~/.local/share/fonts/FiraCode/
+    fc-cache -f -v
+fi
 # pfetch Kurulumu (Sistem Bilgi Gösterici)
 if ! command -v pfetch &> /dev/null; then
     echo "pfetch kuruluyor..."
