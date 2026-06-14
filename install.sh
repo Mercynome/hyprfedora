@@ -27,14 +27,14 @@ if [ "$OS" == "fedora" ]; then
     sudo dnf copr enable -y solopasha/hyprland
     sudo dnf copr enable -y scottames/awww
     sudo dnf copr enable -y sdegler/hyprland
-    sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz
+    sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
     cargo install hyprKCS
 
 elif [ "$OS" == "arch" ]; then
     echo "Arch Linux tespit edildi! Paketler pacman/paru ile kuruluyor..."
-    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum qt5ct qt6ct cliphist pyprland hypridle hyprlock cargo wget tar xz
+    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum qt5ct qt6ct cliphist pyprland hypridle hyprlock cargo wget tar xz zsh
     # AUR paketleri için yay veya paru varsayıyoruz:
     if command -v paru &> /dev/null; then
         paru -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git
@@ -144,7 +144,9 @@ echo "GRUB (Önyükleyici) teması kuruluyor (Hyperfluent Fedora)..."
 sudo mkdir -p /boot/grub2/themes
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "$SCRIPT_DIR/hyperfluent-fedora.tar.gz" ]; then
-    sudo tar -xzf "$SCRIPT_DIR/hyperfluent-fedora.tar.gz" -C /boot/grub2/themes/
+    # Dosyanın çıkarıldığı yeri açıkça belirtelim ve yetki sorunu olmaması için sudo ile bash alt kabuğunda çalıştıralım
+    sudo bash -c "tar -xzf '$SCRIPT_DIR/hyperfluent-fedora.tar.gz' -C /boot/grub2/themes/ 2>/dev/null || true"
+    
     if grep -q "^GRUB_THEME=" /etc/default/grub; then
         sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub2/themes/hyperfluent-fedora/theme.txt"|' /etc/default/grub
     else
@@ -161,6 +163,11 @@ echo "İkon ve İmleç temaları (Pure-Dark & Bibata) GTK geneli için varsayıl
 gsettings set org.gnome.desktop.interface icon-theme 'Pure-Dark' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
+
+echo "Terminal kabuğu ZSH olarak değiştiriliyor..."
+if [ "$SHELL" != "/bin/zsh" ] && [ "$SHELL" != "/usr/bin/zsh" ]; then
+    chsh -s $(which zsh) || echo "ZSH varsayılan kabuk yapılamadı. Manuel olarak 'chsh -s \$(which zsh)' komutunu çalıştırabilirsiniz."
+fi
 
 echo "========================================================================="
 echo "KURULUM VE DOTFILES AKTARIMI BAŞARIYLA TAMAMLANDI! 🚀"
