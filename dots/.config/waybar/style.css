@@ -1,0 +1,193 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Noto Sans", "Ubuntu", "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Ana Bar: Tamamen Şeffaf */
+window#waybar {
+    background: transparent;
+}
+
+/* ---- Tooltip ---- */
+tooltip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+}
+tooltip label {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+}
+
+/* ---- GLASSMORPHISM BASE CLASS ---- */
+#workspaces, #window, #clock, #mpris, #custom-weather, #custom-updates,
+#idle_inhibitor, #battery, #custom-cava, #custom-settings, #tray, 
+#taskbar button, #custom-power,
+#disk, #temperature, #cpu, #memory, #network, #pulseaudio, #pulseaudio.microphone {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 6px 4px;
+    padding: 0 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover Effects (Standalone Modules Only for Background Change) */
+#window:hover, #clock:hover, #mpris:hover, #custom-weather:hover, 
+#custom-updates:hover, #idle_inhibitor:hover, #battery:hover, 
+#custom-cava:hover, #custom-settings:hover, #tray:hover, 
+#taskbar button:hover, #custom-power:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+/* Hover Effects (Fused Modules - Glow Only) */
+#disk:hover, #temperature:hover, #cpu:hover, #memory:hover, #network:hover, #pulseaudio:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* ======== SOL: Workspace'ler ======== */
+#workspaces {
+    padding: 2px 6px;
+}
+#workspaces button {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0 10px;
+    margin: 4px 2px;
+    border-radius: 14px;
+    font-weight: 700;
+}
+#workspaces button.active {
+    background: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+#workspaces button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+#workspaces button.urgent {
+    background: rgba(247, 118, 142, 0.8);
+    color: #ffffff;
+}
+
+/* ======== SOL: Pencere Başlığı ======== */
+#window {
+    font-weight: 500;
+}
+
+/* ======== ORTA: Saat ======== */
+#clock {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* ======== GÖREV ÇUBUĞU ======== */
+#taskbar {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+/* ======== GRUPLAR (Seamless Glass Pills via Adjacency) ======== */
+#disk {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+    border-right: none;
+    padding-right: 8px;
+}
+#temperature, #cpu {
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: none;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+#memory {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    padding-left: 8px;
+}
+
+#network {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+    border-right: none;
+    padding-right: 8px;
+}
+#pulseaudio {
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: none;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+#pulseaudio.microphone {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    padding-left: 8px;
+}
+
+/* ---- Batarya ---- */
+#battery {
+    font-weight: 600;
+}
+#battery.charging {
+    color: #a6e3a1;
+}
+#battery.warning:not(.charging) {
+    color: #f9e2af;
+}
+#battery.critical:not(.charging) {
+    color: #f38ba8;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ---- Güç Düğmesi ---- */
+#custom-power {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0 16px;
+}
+#custom-power:hover {
+    background: rgba(243, 139, 168, 0.4);
+    color: #ffffff;
+    border-color: rgba(243, 139, 168, 0.6);
+}
+
+/* ---- Tray ---- */
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+/* ---- Animasyonlar ---- */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}

@@ -1,0 +1,169 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 0,
+    "modules-left": ["hyprland/workspaces", "wlr/taskbar", "hyprland/window", "custom/cava"],
+    "modules-center": ["mpris", "clock", "custom/weather"],
+    "modules-right": ["custom/updates", "custom/settings", "disk", "temperature", "cpu", "memory", "battery", "network", "pulseaudio", "pulseaudio#microphone", "tray", "custom/power"],
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "format": "{id}",
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "ignore-list": [
+            "kitty"
+        ]
+    },
+
+    "hyprland/window": {
+        "max-length": 90,
+        "separate-outputs": true
+    },
+
+    "mpris": {
+        "format": "{player_icon}  {dynamic}",
+        "format-paused": "{status_icon}  <i>{dynamic}</i>",
+        "max-length": 45,
+        "player-icons": {
+            "default": "🎵",
+            "spotify": "",
+            "firefox": "🦊",
+            "chromium": "🌐"
+        },
+        "status-icons": {
+            "paused": "⏸"
+        }
+    },
+
+    "custom/weather": {
+        "format": "{}",
+        "tooltip": true,
+        "interval": 3600,
+        "exec": "curl -s 'wttr.in/?format=1'",
+        "return-type": "text"
+    },
+
+    "custom/updates": {
+        "format": "📦 {}",
+        "interval": 3600,
+        "exec": "~/.config/waybar/scripts/check-updates.sh",
+        "return-type": "json",
+        "on-click": "kitty -e sudo dnf upgrade"
+    },
+
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon}  {temperatureC}°C",
+        "format-icons": ["", "", ""],
+        "on-click": "kitty -e btop",
+        "tooltip-format": "Temperature: {temperatureC}°C"
+    },
+
+    "cpu": {
+        "format": "  {usage}%",
+        "tooltip": true,
+        "tooltip-format": "CPU Usage: {usage}%",
+        "on-click": "kitty -e btop"
+    },
+
+    "memory": {
+        "format": "  {}%",
+        "tooltip": true,
+        "tooltip-format": "Memory: {used}GiB / {total}GiB ({percentage}%)",
+        "on-click": "kitty -e btop"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "  {:%H:%M  ·  %d %b %a}"
+    },
+
+    "network": {
+        "format-wifi": "   {essid}  |  ⬇ {bandwidthDownBytes}  ⬆ {bandwidthUpBytes}",
+        "format-ethernet": "󰈀  {ipaddr}  |  ⬇ {bandwidthDownBytes}  ⬆ {bandwidthUpBytes}",
+        "tooltip-format": "  {ifname}\n  {ipaddr}/{cidr}\n󰩟  {gwaddr}\n  {signalStrength}%",
+        "format-disconnected": "󰤭  Bağlantı Yok",
+        "format-alt": "  {signalStrength}%",
+        "interval": 2
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "󰝟  Sessiz",
+        "format-icons": {
+            "headphone": "󰋋",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-scroll-up": "pamixer -i 2",
+        "on-scroll-down": "pamixer -d 2",
+        "tooltip-format": "{desc}\n{volume}%"
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": " Sessiz",
+        "on-click": "pamixer --default-source -t",
+        "on-scroll-up": "pamixer --default-source -i 2",
+        "on-scroll-down": "pamixer --default-source -d 2",
+        "tooltip": false
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "wlogout -B 400 -T 400 -R 800 -L 800",
+        "tooltip": false
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive-items": true
+    },
+
+    "custom/cava": {
+        "exec": "~/.config/waybar/scripts/cava.sh",
+        "return-type": "text",
+        "tooltip": false,
+        "tail": true
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "  {percentage_used}%",
+        "path": "/",
+        "on-click": "kitty -e btop",
+        "tooltip-format": "Disk: {used} / {total} ({percentage_used}%)"
+    },
+
+    "custom/settings": {
+        "format": "",
+        "on-click": "kitty -e nvim ~/.config/hypr/hyprland.conf",
+        "tooltip": false
+    }
+}

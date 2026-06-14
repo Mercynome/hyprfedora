@@ -1,0 +1,175 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Inter", "Font Awesome 6 Free", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* ---- Ana Bar: Buzlu Cam ---- */
+window#waybar {
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+window#waybar > box {
+    margin: 0;
+    padding: 0 4px;
+}
+
+/* ---- Tooltip ---- */
+tooltip {
+    background: rgba(15, 17, 30, 0.82);
+    border: 1px solid rgba(91, 206, 250, 0.12);
+    border-radius: 12px;
+}
+tooltip label {
+    color: #c0caf5;
+    padding: 4px 8px;
+}
+
+/* ======== SOL: Workspace'ler ======== */
+#workspaces {
+    margin: 4px 6px 4px 4px;
+    padding: 0 2px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+#workspaces button {
+    padding: 0 9px;
+    margin: 3px 1px;
+    background: transparent;
+    color: rgba(192, 202, 245, 0.8);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 24px;
+    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#workspaces button:hover {
+    background: rgba(91, 206, 250, 0.15);
+    color: #ffffff;
+}
+
+#workspaces button.active {
+    background: rgba(91, 206, 250, 0.25);
+    color: #5bcefa;
+    border-bottom: 2px solid #5bcefa;
+    text-shadow: 0 0 5px rgba(91, 206, 250, 0.4);
+}
+
+#workspaces button.urgent {
+    color: #f7768e;
+    border-bottom: 2px solid #f7768e;
+}
+
+/* ======== SOL: Pencere Başlığı ======== */
+#window {
+    color: #c0caf5;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 12px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ======== ORTA: Saat ======== */
+#clock {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    padding: 0 16px;
+    margin: 5px 0;
+    background: transparent;
+    border-radius: 10px;
+    text-shadow: 0 0 8px rgba(91, 206, 250, 0.6);
+}
+
+/* ======== SAĞ: Sistem Modülleri ======== */
+#network,
+#pulseaudio,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#tray {
+    padding: 0 11px;
+    margin: 5px 1px;
+    color: #c0caf5;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 200ms ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+#network:hover,
+#pulseaudio:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#tray:hover {
+    background: rgba(91, 206, 250, 0.15);
+    color: #ffffff;
+}
+
+#pulseaudio {
+    color: #7aa2f7;
+}
+
+#network.wifi {
+    color: #9ece6a;
+}
+#network.disconnected {
+    color: rgba(192, 202, 245, 0.6);
+}
+
+/* ---- Batarya ---- */
+#battery.charging {
+    color: #9ece6a;
+}
+#battery.warning:not(.charging) {
+    color: #e0af68;
+}
+#battery.critical:not(.charging) {
+    color: #f7768e;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ---- Güç Düğmesi ---- */
+#custom-power {
+    font-size: 16px;
+    padding: 0 14px;
+    margin: 5px 5px 5px 4px;
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+    border-radius: 8px;
+    transition: all 200ms ease;
+}
+#custom-power:hover {
+    background: rgba(247, 118, 142, 0.25);
+    color: #ff9eaf;
+}
+
+/* ---- Tray ---- */
+#tray {
+    padding: 0 6px;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+/* ---- Animasyonlar ---- */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
