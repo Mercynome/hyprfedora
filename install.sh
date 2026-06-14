@@ -83,6 +83,23 @@ for item in "$DOTS_DIR"/*; do
     fi
 done
 
+# GRUB Tema Kurulumu
+echo "GRUB (Önyükleyici) teması kuruluyor (Hyperfluent Windows Dark)..."
+sudo mkdir -p /boot/grub2/themes
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/hyperfluent-windows-dark.tar.gz" ]; then
+    sudo tar -xzf "$SCRIPT_DIR/hyperfluent-windows-dark.tar.gz" -C /boot/grub2/themes/
+    if grep -q "^GRUB_THEME=" /etc/default/grub; then
+        sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub2/themes/hyperfluent-windows-dark/theme.txt"|' /etc/default/grub
+    else
+        echo 'GRUB_THEME="/boot/grub2/themes/hyperfluent-windows-dark/theme.txt"' | sudo tee -a /etc/default/grub
+    fi
+    sudo grub2-mkconfig -o /boot/grub2/grub.cfg || sudo grub-mkconfig -o /boot/grub/grub.cfg
+    echo "GRUB teması başarıyla uygulandı!"
+else
+    echo "GRUB teması dosyası bulunamadı, atlanıyor."
+fi
+
 # GTK ve Hyprland Tema Ayarlarının Uygulanması
 echo "İkon ve İmleç temaları (Pure-Dark & Bibata) GTK geneli için varsayılan yapılıyor..."
 gsettings set org.gnome.desktop.interface icon-theme 'Pure-Dark' 2>/dev/null || true
