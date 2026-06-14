@@ -17,14 +17,14 @@ fi
 if [ "$OS" == "fedora" ]; then
     echo "Fedora sistemi tespit edildi! Paketler kuruluyor..."
     sudo dnf copr enable -y solopasha/hyprland scottames/awww tofik/nwg-shell sdegler/hyprland
-    sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel
+    sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
     cargo install hyprKCS
 
 elif [ "$OS" == "arch" ]; then
     echo "Arch Linux tespit edildi! Paketler pacman/paru ile kuruluyor..."
-    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum cliphist pyprland hypridle hyprlock cargo
+    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum qt5ct qt6ct cliphist pyprland hypridle hyprlock cargo wget tar xz
     # AUR paketleri için yay veya paru varsayıyoruz:
     if command -v paru &> /dev/null; then
         paru -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git
@@ -36,6 +36,26 @@ elif [ "$OS" == "arch" ]; then
     fi
 else
     echo "Desteklenmeyen OS: $OS. Lütfen paketleri elle kurun."
+fi
+
+echo "İkon ve İmleç temaları doğrudan kaynak koddan indiriliyor..."
+mkdir -p ~/.local/share/icons
+mkdir -p ~/.icons
+
+# Pure Icon Theme (GitHub'dan clone edip kopyalama)
+if [ ! -d "$HOME/.local/share/icons/Pure-Dark" ]; then
+    echo "Pure Icon Theme indiriliyor..."
+    temp_pure=$(mktemp -d)
+    git clone https://github.com/mjkim0727/Pure-icon-theme.git "$temp_pure"
+    cd "$temp_pure"
+    ./install-user.sh || cp -r Pure* ~/.local/share/icons/
+    rm -rf "$temp_pure"
+fi
+
+# Bibata Modern Classic Cursors (GitHub Releases'ten doğrudan indirme)
+if [ ! -d "$HOME/.icons/Bibata-Modern-Classic" ]; then
+    echo "Bibata Cursors indiriliyor..."
+    wget -qO- https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Classic.tar.xz | tar xJ -C ~/.icons/
 fi
 
 echo "Paket kurulumu tamamlandı."
