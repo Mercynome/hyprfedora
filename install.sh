@@ -27,19 +27,19 @@ if [ "$OS" == "fedora" ]; then
     sudo dnf copr enable -y solopasha/hyprland
     sudo dnf copr enable -y scottames/awww
     sudo dnf copr enable -y sdegler/hyprland
-    sudo dnf install -y --skip-unavailable kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user unzip
+    sudo dnf install -y --skip-unavailable kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user unzip cava btop rofi nwg-drawer swww
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
     cargo install hyprKCS
 
 elif [ "$OS" == "arch" ]; then
     echo "Arch Linux tespit edildi! Paketler pacman/paru ile kuruluyor..."
-    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum qt5ct qt6ct cliphist pyprland hypridle hyprlock cargo wget tar xz zsh
+    sudo pacman -Syu --needed hyprland kitty fuzzel waybar wlogout kvantum qt5ct qt6ct cliphist pyprland hypridle hyprlock cargo wget tar xz zsh unzip cava btop rofi swww
     # AUR paketleri için yay veya paru varsayıyoruz:
     if command -v paru &> /dev/null; then
-        paru -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git
+        paru -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git nwg-drawer
     elif command -v yay &> /dev/null; then
-        yay -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git
+        yay -S --needed swaync satty waypaper hyprpolkitagent hyprsunset hyprshot nwg-look awww-git hyprkcs-git nwg-drawer
     else
         echo "Lütfen AUR yardımcı programı (yay veya paru) kurun."
         exit 1
