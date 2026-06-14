@@ -24,7 +24,9 @@ fi
 
 if [ "$OS" == "fedora" ]; then
     echo "Fedora sistemi tespit edildi! Paketler kuruluyor..."
-    sudo dnf copr enable -y solopasha/hyprland scottames/awww sdegler/hyprland
+    sudo dnf copr enable -y solopasha/hyprland
+    sudo dnf copr enable -y scottames/awww
+    sudo dnf copr enable -y sdegler/hyprland
     sudo dnf install -y kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
@@ -65,15 +67,21 @@ fi
 # Bibata Modern Classic Cursors (GitHub Releases'ten doğrudan indirme)
 if [ ! -d "$HOME/.icons/Bibata-Modern-Classic" ]; then
     echo "Bibata Cursors indiriliyor..."
-    wget -qO- https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Classic.tar.xz | tar xJ -C ~/.icons/
+    wget -q https://github.com/ful1e5/Bibata_Cursor/releases/latest/download/Bibata-Modern-Classic.tar.xz -O /tmp/bibata.tar.xz
+    tar xJf /tmp/bibata.tar.xz -C ~/.icons/
+    rm -f /tmp/bibata.tar.xz
 fi
+
 # Nerd Fonts Kurulumu (FiraCode)
 if ! fc-list | grep -i "FiraCode Nerd Font" &> /dev/null; then
     echo "FiraCode Nerd Font indiriliyor..."
     mkdir -p ~/.local/share/fonts/FiraCode
-    wget -qO- https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz | tar xJ -C ~/.local/share/fonts/FiraCode/
+    wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz -O /tmp/FiraCode.tar.xz
+    tar xJf /tmp/FiraCode.tar.xz -C ~/.local/share/fonts/FiraCode/
+    rm -f /tmp/FiraCode.tar.xz
     fc-cache -f -v
 fi
+
 # pfetch Kurulumu (Sistem Bilgi Gösterici)
 if ! command -v pfetch &> /dev/null; then
     echo "pfetch kuruluyor..."
