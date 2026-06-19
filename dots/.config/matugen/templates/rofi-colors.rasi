@@ -1,0 +1,17 @@
+/* Rofi Dinamik Renkler — matugen tarafından otomatik üretilir */
+
+* {
+    mat-primary:             {{colors.primary.default.hex}};
+    mat-on-primary:          {{colors.on_primary.default.hex}};
+    mat-primary-container:   {{colors.primary_container.default.hex}};
+    mat-secondary:           {{colors.secondary.default.hex}};
+    mat-secondary-container: {{colors.secondary_container.default.hex}};
+    mat-tertiary:            {{colors.tertiary.default.hex}};
+    mat-surface:             {{colors.surface.default.hex}};
+    mat-on-surface:          {{colors.on_surface.default.hex}};
+    mat-surface-variant:     {{colors.surface_variant.default.hex}};
+    mat-on-surface-variant:  {{colors.on_surface_variant.default.hex}};
+    mat-background:          {{colors.background.default.hex}};
+    mat-error:               {{colors.error.default.hex}};
+    mat-outline:             {{colors.outline.default.hex}};
+}

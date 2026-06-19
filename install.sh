@@ -27,7 +27,7 @@ if [ "$OS" == "fedora" ]; then
     sudo dnf copr enable -y solopasha/hyprland
     sudo dnf copr enable -y scottames/awww
     sudo dnf copr enable -y sdegler/hyprland
-    sudo dnf install -y --skip-unavailable kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist wl-clipboard satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user unzip cava btop rofi nwg-drawer swww quickshell qt5-qtwayland qt6-qtwayland qt6-qtsvg qt6-qtdeclarative qt6-qt5compat grim slurp jq xdg-desktop-portal-hyprland xdg-desktop-portal-gtk thunar libnotify pavucontrol pamixer brightnessctl playerctl wtype
+    sudo dnf install -y --skip-unavailable kitty fuzzel waybar SwayNotificationCenter wlogout kvantum qt5ct qt6ct cliphist wl-clipboard satty waypaper pyprland hyprland hyprpolkitagent hypridle hyprlock hyprsunset hyprshot nwg-look awww cargo rust-packaging gtk4-layer-shell-devel wget tar xz zsh util-linux-user unzip cava btop rofi nwg-drawer swww quickshell qt5-qtwayland qt6-qtwayland qt6-qtsvg qt6-qtdeclarative qt6-qt5compat grim slurp jq xdg-desktop-portal-hyprland xdg-desktop-portal-gtk thunar libnotify pavucontrol pamixer brightnessctl playerctl wtype hyprpicker rofimoji
     
     echo "hyprKCS (Arayüzlü Tuş Yöneticisi) Cargo ile kuruluyor..."
     cargo install hyprKCS
@@ -46,6 +46,14 @@ elif [ "$OS" == "arch" ]; then
     fi
 else
     echo "Desteklenmeyen OS: $OS. Lütfen paketleri elle kurun."
+fi
+
+echo "Dinamik Renk Sistemi (Matugen) kuruluyor..."
+cargo install matugen
+
+echo "Spotify Tema Motoru (Spicetify) kuruluyor..."
+if ! command -v spicetify &> /dev/null; then
+    curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 fi
 
 echo "İkon ve İmleç temaları doğrudan kaynak koddan indiriliyor..."

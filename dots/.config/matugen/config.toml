@@ -1,0 +1,27 @@
+[config]
+# Karanlık mod — Material You Dark renk şeması
+type = "scheme-tonal-spot"
+[config.custom_colors]
+
+# ════════════════════════════════════════════════════════════
+# TEMPLATE DOSYALARI
+# Her biri duvar kağıdından çıkarılan renklerle doldurulur
+# ════════════════════════════════════════════════════════════
+
+
+
+[templates.kitty-colors]
+input_path = "~/.config/matugen/templates/kitty-colors.conf"
+output_path = "~/.config/kitty/matugen.conf"
+
+[templates.waybar-colors]
+input_path = "~/.config/matugen/templates/waybar-colors.css"
+output_path = "~/.config/waybar/colors.css"
+
+[templates.rofi-colors]
+input_path = "~/.config/matugen/templates/rofi-colors.rasi"
+output_path = "~/.config/rofi/colors.rasi"
+
+[templates.spicetify-colors]
+input_path = "~/.config/matugen/templates/spicetify-colors.ini"
+output_path = "~/.config/spicetify/Themes/Matugen/color.ini"

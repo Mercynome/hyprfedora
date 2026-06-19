@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Ana Seçim Menüsü (Tek tıkla çalışır)
-choice=$(echo -e " Metin Geçmişi\n Resim Galerisi" | rofi -dmenu -p " Pano" -me-select-entry "" -me-accept-entry MousePrimary -theme-str 'listview { lines: 2; columns: 1; } element { padding: 15px; } element-text { font: "sans-serif 16"; } window { width: 25%; }')
+choice=$(echo -e " Metin Geçmişi\n Resim Galerisi\n Renk Geçmişi" | rofi -dmenu -p " Pano" -me-select-entry "" -me-accept-entry MousePrimary -theme-str 'listview { lines: 3; columns: 1; } element { padding: 15px; } element-text { font: "sans-serif 16"; } window { width: 25%; }')
 
 if [[ "$choice" == " Metin Geçmişi" ]]; then
     output=""
@@ -12,7 +12,7 @@ if [[ "$choice" == " Metin Geçmişi" ]]; then
         fi
     done < <(cliphist list)
 
-    # Sadece Metinler: Kocaman font, tek sütun liste (Tek tıkla yapıştırır)
+    # Sadece Metinler
     selected_id=$(echo -en "$output" | rofi -dmenu -p " Metinler" -me-select-entry "" -me-accept-entry MousePrimary \
         -theme-str 'listview { columns: 1; lines: 8; } element { padding: 20px; } element-text { font: "sans-serif 18"; horizontal-align: 0.0; } window { width: 50%; }')
 
@@ -37,9 +37,29 @@ elif [[ "$choice" == " Resim Galerisi" ]]; then
         fi
     done < <(cliphist list)
 
-    # Sadece Resimler: Uygulama başlatıcı (launcher) gibi ızgara (grid) görünümü! (Tek tıkla yapıştırır)
+    # Sadece Resimler
     selected_id=$(echo -en "$output" | rofi -dmenu -show-icons -p " Resimler" -me-select-entry "" -me-accept-entry MousePrimary \
         -theme-str 'listview { columns: 4; lines: 3; } element { orientation: vertical; padding: 15px; } element-icon { size: 140px; } element-text { font: "sans-serif 1"; } window { width: 60%; }')
+
+    if [ -n "$selected_id" ]; then
+        cliphist list | grep -P "^${selected_id}\t" | cliphist decode | wl-copy
+    fi
+
+elif [[ "$choice" == " Renk Geçmişi" ]]; then
+    output=""
+    while IFS=$'\t' read -r id content; do
+        if [[ "$content" != *"[[ binary data"* ]]; then
+            clean_content=$(echo "$content" | tr -d '\n' | cut -c 1-200)
+            if [[ "$clean_content" =~ ^#[0-9A-Fa-f]{6}$ ]]; then
+                display_content="<span color=\"$clean_content\">██████████</span>  <b>$clean_content</b>"
+                output+="${id}\0display\x1f${display_content}\n"
+            fi
+        fi
+    done < <(cliphist list)
+
+    # Sadece Renkler (Pango markup aktif)
+    selected_id=$(echo -en "$output" | rofi -dmenu -markup-rows -p " Renkler" -me-select-entry "" -me-accept-entry MousePrimary \
+        -theme-str 'listview { columns: 1; lines: 8; } element { padding: 20px; } element-text { font: "sans-serif 18"; horizontal-align: 0.0; } window { width: 50%; }')
 
     if [ -n "$selected_id" ]; then
         cliphist list | grep -P "^${selected_id}\t" | cliphist decode | wl-copy
