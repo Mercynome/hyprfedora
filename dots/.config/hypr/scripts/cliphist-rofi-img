@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Ana Seçim Menüsü (Tek tıkla çalışır)
+choice=$(echo -e " Metin Geçmişi\n Resim Galerisi" | rofi -dmenu -p " Pano" -me-select-entry "" -me-accept-entry MousePrimary -theme-str 'listview { lines: 2; columns: 1; } element { padding: 15px; } element-text { font: "sans-serif 16"; } window { width: 25%; }')
+
+if [[ "$choice" == " Metin Geçmişi" ]]; then
+    output=""
+    while IFS=$'\t' read -r id content; do
+        if [[ "$content" != *"[[ binary data"* ]]; then
+            clean_content=$(echo "$content" | tr -d '\n' | cut -c 1-200)
+            output+="${id}\0display\x1f${clean_content}\n"
+        fi
+    done < <(cliphist list)
+
+    # Sadece Metinler: Kocaman font, tek sütun liste (Tek tıkla yapıştırır)
+    selected_id=$(echo -en "$output" | rofi -dmenu -p " Metinler" -me-select-entry "" -me-accept-entry MousePrimary \
+        -theme-str 'listview { columns: 1; lines: 8; } element { padding: 20px; } element-text { font: "sans-serif 18"; horizontal-align: 0.0; } window { width: 50%; }')
+
+    if [ -n "$selected_id" ]; then
+        cliphist list | grep -P "^${selected_id}\t" | cliphist decode | wl-copy
+    fi
+
+elif [[ "$choice" == " Resim Galerisi" ]]; then
+    thumb_dir="/tmp/cliphist-rofi-thumbs"
+    mkdir -p "$thumb_dir"
+    find "$thumb_dir" -mmin +60 -type f -delete 2>/dev/null
+
+    output=""
+    while IFS=$'\t' read -r id content; do
+        if [[ "$content" == *"[[ binary data"* ]]; then
+            thumb_path="$thumb_dir/${id}.png"
+            if [ ! -f "$thumb_path" ]; then
+                printf "%s\t%s\n" "$id" "$content" | cliphist decode > "$thumb_path" 2>/dev/null
+            fi
+            # Yazı kısmını boş bırakıp (' '), sadece devasa icon gösteriyoruz
+            output+="${id}\0display\x1f \x1ficon\x1f${thumb_path}\n"
+        fi
+    done < <(cliphist list)
+
+    # Sadece Resimler: Uygulama başlatıcı (launcher) gibi ızgara (grid) görünümü! (Tek tıkla yapıştırır)
+    selected_id=$(echo -en "$output" | rofi -dmenu -show-icons -p " Resimler" -me-select-entry "" -me-accept-entry MousePrimary \
+        -theme-str 'listview { columns: 4; lines: 3; } element { orientation: vertical; padding: 15px; } element-icon { size: 140px; } element-text { font: "sans-serif 1"; } window { width: 60%; }')
+
+    if [ -n "$selected_id" ]; then
+        cliphist list | grep -P "^${selected_id}\t" | cliphist decode | wl-copy
+    fi
+fi

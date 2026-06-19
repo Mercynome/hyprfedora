@@ -1,0 +1,67 @@
+#!/bin/bash
+# ==============================================================================
+# 🎨 TEMA DEĞİŞTİRİCİ (THEME SWITCHER)
+# ==============================================================================
+# Kullanım: theme-switch <tema_adı>
+# Örnek:    theme-switch glassmorphism
+#           theme-switch minimalist
+# Fuzzel ile: theme-switch   (argüman olmadan çalıştırırsan fuzzel ile seçersin)
+
+THEMES_DIR="$HOME/Belgeler/Dotfiles/my-hypr-dots/themes"
+CONFIG_DIR="$HOME/.config"
+DOTS_DIR="$HOME/Belgeler/Dotfiles/my-hypr-dots/dots/.config"
+
+# Mevcut temaları listele
+available_themes() {
+    ls -1 "$THEMES_DIR" 2>/dev/null
+}
+
+# Fuzzel ile tema seçtir (argüman verilmezse)
+if [ -z "$1" ]; then
+    THEME=$(available_themes | fuzzel --dmenu --prompt="🎨 Tema Seç: " --width=30 --lines=5)
+    [ -z "$THEME" ] && exit 0
+else
+    THEME="$1"
+fi
+
+# Tema klasörü var mı?
+if [ ! -d "$THEMES_DIR/$THEME" ]; then
+    notify-send "❌ Tema Hatası" "'$THEME' bulunamadı!" -u critical
+    exit 1
+fi
+
+echo "🎨 Tema değiştiriliyor: $THEME"
+
+# Waybar CSS kopyala
+if [ -f "$THEMES_DIR/$THEME/waybar/style.css" ]; then
+    cp "$THEMES_DIR/$THEME/waybar/style.css" "$DOTS_DIR/waybar/style.css"
+    echo "  ✓ Waybar stili güncellendi"
+fi
+
+# Fuzzel INI kopyala
+if [ -f "$THEMES_DIR/$THEME/fuzzel/fuzzel.ini" ]; then
+    cp "$THEMES_DIR/$THEME/fuzzel/fuzzel.ini" "$DOTS_DIR/fuzzel/fuzzel.ini"
+    echo "  ✓ Fuzzel stili güncellendi"
+fi
+
+# Hyprland tema override kopyala
+if [ -f "$THEMES_DIR/$THEME/hypr/theme.conf" ]; then
+    cp "$THEMES_DIR/$THEME/hypr/theme.conf" "$DOTS_DIR/hypr/theme.conf"
+    echo "  ✓ Hyprland tema override güncellendi"
+fi
+
+# Aktif temayı kaydet
+echo "$THEME" > "$THEMES_DIR/.current"
+
+# Waybar'ı yeniden başlat
+killall waybar 2>/dev/null
+sleep 0.3
+waybar &
+disown
+
+# Hyprland config'i yeniden yükle
+hyprctl reload
+
+notify-send "🎨 Tema Değiştirildi" "$THEME aktif edildi!" -u normal
+
+echo "✅ Tema başarıyla değiştirildi: $THEME"
